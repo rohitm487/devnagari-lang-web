@@ -32,6 +32,8 @@ jobs:
           chmod 644 deploy/devnagari_lang/*.py
           # Copy examples
           cp -r examples deploy/
+          # Create a test file to verify deployment
+          echo "Test file" > deploy/test.txt
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

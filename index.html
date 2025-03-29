@@ -286,9 +286,11 @@
             try {
                 // Get the base URL for GitHub Pages
                 const baseUrl = window.location.href.replace(/\/$/, '');
+                console.log(`Fetching ${baseUrl}/devnagari_lang/${filename}`);
                 const response = await fetch(`${baseUrl}/devnagari_lang/${filename}`);
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch ${filename}`);
+                    console.error(`Failed to fetch ${filename}:`, response.status, response.statusText);
+                    throw new Error(`Failed to fetch ${filename}: ${response.status} ${response.statusText}`);
                 }
                 return await response.text();
             } catch (error) {
@@ -301,6 +303,7 @@
             document.getElementById("loading").style.display = "flex";
             try {
                 pyodide = await loadPyodide();
+                console.log("Pyodide loaded successfully");
                 
                 // Create the devnagari_lang directory in the virtual filesystem
                 await pyodide.runPythonAsync(`
@@ -312,6 +315,7 @@ if not os.path.exists('devnagari_lang'):
                 const files = ['__init__.py', 'lexer.py', 'parser.py', 'interpreter.py', 'devnagari.py'];
                 for (const file of files) {
                     try {
+                        console.log(`Loading ${file}...`);
                         const content = await fetchPythonFile(file);
                         // Properly escape the content for Python string
                         const escapedContent = content
@@ -322,7 +326,9 @@ if not os.path.exists('devnagari_lang'):
                         await pyodide.runPythonAsync(`
 with open('devnagari_lang/${file}', 'w', encoding='utf-8') as f:
     f.write("""${escapedContent}""")`);
+                        console.log(`Successfully loaded ${file}`);
                     } catch (error) {
+                        console.error(`Error loading ${file}:`, error);
                         document.getElementById("output").innerHTML = `<span class="error">Error loading ${file}: ${error.message}</span>`;
                         throw error;
                     }
