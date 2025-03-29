@@ -1,69 +1,69 @@
 # देवनागरी Programming Language Web IDE
 
-An online IDE for the Devnagari Programming Language, allowing you to write and execute code directly in your browser using Pyiodide.
+देवनागरी प्रोग्रामिंग भाषा के लिए एक ऑनलाइन IDE, जो आपको Pyiodide का उपयोग करके सीधे अपने ब्राउज़र में कोड लिखने और चलाने की अनुमति देता है।
 
-## Features
+## विशेषताएं (Features)
 
-- 🌐 Browser-based execution - no installation required
-- 📝 Syntax-highlighted code editor
-- 🎯 Real-time code execution
-- 📚 Built-in code examples
-- 🎨 Modern, responsive UI
-- 💻 Cross-platform compatibility
+- 🌐 ब्राउज़र-आधारित निष्पादन - कोई इंस्टॉलेशन आवश्यक नहीं
+- 📝 सिंटैक्स-हाइलाइटेड कोड एडिटर
+- 🎯 रीयल-टाइम कोड निष्पादन
+- 📚 बिल्ट-इन कोड उदाहरण
+- 🎨 आधुनिक, रेस्पॉन्सिव UI
+- 💻 क्रॉस-प्लेटफॉर्म संगतता
 
-## Quick Start
+## त्वरित प्रारंभ (Quick Start)
 
-1. Visit the live demo at [rohitm487.github.io/devnagari-lang-web](https://rohitm487.github.io/devnagari-lang-web)
-2. Start coding in Devnagari directly in your browser!
+1. लाइव डेमो पर जाएं [rohitm487.github.io/devnagari-lang-web](https://rohitm487.github.io/devnagari-lang-web)
+2. सीधे अपने ब्राउज़र में देवनागरी में कोडिंग शुरू करें!
 
-## Local Installation
+## स्थानीय इंस्टॉलेशन (Local Installation)
 
-### Method 1: Using Git (Recommended)
+### विधि 1: Git का उपयोग करके (Recommended)
 
-1. Clone the repository:
+1. रिपॉजिटरी को क्लोन करें:
    ```bash
    git clone https://github.com/rohitm487/devnagari-lang-web.git
    cd devnagari-lang-web
    ```
 
-2. Start a local server:
+2. स्थानीय सर्वर शुरू करें:
    ```bash
    python3 -m http.server 8000
    ```
 
-3. Open your browser and navigate to `http://localhost:8000`
+3. अपने ब्राउज़र में `http://localhost:8000` पर जाएं
 
-### Method 2: Direct Download
+### विधि 2: सीधा डाउनलोड
 
-1. Go to the [releases page](https://github.com/rohitm487/devnagari-lang-web/releases)
-2. Download the latest release ZIP file
-3. Extract the ZIP file to your desired location
-4. Open a terminal in the extracted folder
-5. Start a local server:
+1. [रिलीज पेज](https://github.com/rohitm487/devnagari-lang-web/releases) पर जाएं
+2. नवीनतम रिलीज ZIP फ़ाइल डाउनलोड करें
+3. ZIP फ़ाइल को अपनी पसंदीदा लोकेशन में एक्सट्रैक्ट करें
+4. एक्सट्रैक्ट की गई फ़ोल्डर में टर्मिनल खोलें
+5. स्थानीय सर्वर शुरू करें:
    ```bash
    python3 -m http.server 8000
    ```
-6. Open your browser and navigate to `http://localhost:8000`
+6. अपने ब्राउज़र में `http://localhost:8000` पर जाएं
 
-## Usage Guide
+## उपयोग मार्गदर्शिका (Usage Guide)
 
-1. **Writing Code**
-   - Use the code editor on the left side
-   - Select examples from the dropdown menu to get started
-   - The editor supports syntax highlighting and auto-indentation
+1. **कोड लिखना (Writing Code)**
+   - बाईं ओर के कोड एडिटर का उपयोग करें
+   - शुरू करने के लिए ड्रॉपडाउन मेनू से उदाहरण चुनें
+   - एडिटर सिंटैक्स हाइलाइटिंग और ऑटो-इंडेंटेशन का समर्थन करता है
 
-2. **Running Code**
-   - Click the "Run Code" button or press Ctrl+Enter
-   - The output will appear in the panel on the right
-   - Use the "Clear Output" button to clear the output panel
+2. **कोड चलाना (Running Code)**
+   - "Run Code" बटन पर क्लिक करें या Ctrl+Enter दबाएं
+   - आउटपुट दाईं पैनल में दिखाई देगा
+   - आउटपुट पैनल को साफ़ करने के लिए "Clear Output" बटन का उपयोग करें
 
-3. **Examples**
-   Try these built-in examples:
+3. **उदाहरण (Examples)**
+   इन बिल्ट-इन उदाहरणों को आज़माएं:
    - क्रमगुणित की गणना (Factorial Calculator)
    - फिबोनैकी श्रृंखला (Fibonacci Series)
    - सरल कैलकुलेटर (Simple Calculator)
 
-## Examples
+## उदाहरण (Examples)
 
 ### क्रमगुणित की गणना (Factorial Calculator)
 ```
@@ -105,48 +105,48 @@ An online IDE for the Devnagari Programming Language, allowing you to write and 
 छाप "भाग: " + (पहली_संख्या / दूसरी_संख्या);
 ```
 
-## Troubleshooting
+## समस्या निवारण (Troubleshooting)
 
-1. **Server Already Running**
-   If you see "Address already in use" error:
+1. **सर्वर पहले से चल रहा है (Server Already Running)**
+   यदि आप "Address already in use" त्रुटि देखते हैं:
    ```bash
-   # Find the process using port 8000
+   # पोर्ट 8000 का उपयोग करने वाली प्रक्रिया को खोजें
    lsof -i :8000
-   # Kill the process
+   # प्रक्रिया को समाप्त करें
    kill -9 <PID>
-   # Or use this command to kill any process on port 8000
+   # या पोर्ट 8000 पर चलने वाली किसी भी प्रक्रिया को समाप्त करने के लिए यह कमांड उपयोग करें
    lsof -i :8000 | grep LISTEN | awk '{print $2}' | xargs kill -9
    ```
 
-2. **Browser Issues**
-   - Clear your browser cache if the page doesn't load properly
-   - Make sure JavaScript is enabled in your browser
-   - Try using a modern browser (Chrome, Firefox, Safari, or Edge)
+2. **ब्राउज़र समस्याएं (Browser Issues)**
+   - यदि पेज ठीक से लोड नहीं होता है तो अपने ब्राउज़र का कैश साफ़ करें
+   - सुनिश्चित करें कि आपके ब्राउज़र में JavaScript सक्षम है
+   - आधुनिक ब्राउज़र का उपयोग करें (Chrome, Firefox, Safari, या Edge)
 
-## Technology Stack
+## तकनीकी स्टैक (Technology Stack)
 
-- Pyiodide - Python runtime in the browser
-- Ace Editor - Code editor
+- Pyiodide - ब्राउज़र में Python रनटाइम
+- Ace Editor - कोड एडिटर
 - Modern HTML/CSS/JavaScript
-- GitHub Pages for hosting
+- GitHub Pages होस्टिंग के लिए
 
-## Contributing
+## योगदान (Contributing)
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+योगदान का स्वागत है! कृपया Pull Request जमा करें।
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. रिपॉजिटरी को फोर्क करें
+2. अपनी फीचर ब्रांच बनाएं (`git checkout -b feature/AmazingFeature`)
+3. अपने परिवर्तनों को कमिट करें (`git commit -m 'Add some AmazingFeature'`)
+4. ब्रांच को पुश करें (`git push origin feature/AmazingFeature`)
+5. Pull Request खोलें
 
-## License
+## लाइसेंस (License)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+यह प्रोजेक्ट MIT लाइसेंस के तहत लाइसेंस प्राप्त है - विवरण के लिए [LICENSE](LICENSE) फ़ाइल देखें।
 
-## Support
+## सहायता (Support)
 
-If you encounter any issues or have questions:
-1. Check the [Issues](https://github.com/rohitm487/devnagari-lang-web/issues) page
-2. Create a new issue if your problem isn't already reported
-3. Join our community discussions 
+यदि आपको कोई समस्या आती है या प्रश्न हैं:
+1. [Issues](https://github.com/rohitm487/devnagari-lang-web/issues) पेज देखें
+2. यदि आपकी समस्या पहले से रिपोर्ट नहीं की गई है तो नया इश्यू बनाएं
+3. हमारी समुदाय चर्चाओं में शामिल हों
