@@ -13,7 +13,7 @@ An online IDE for the Devnagari Programming Language, allowing you to write and 
 
 ## Quick Start
 
-1. Visit the live demo at [your-username.github.io/devnagari-lang-web](https://your-username.github.io/devnagari-lang-web)
+1. Visit the live demo at [rohitm487.github.io/devnagari-lang-web](https://rohitm487.github.io/devnagari-lang-web)
 2. Start coding in Devnagari directly in your browser!
 
 ## Local Installation
@@ -22,7 +22,7 @@ An online IDE for the Devnagari Programming Language, allowing you to write and 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/devnagari-lang-web.git
+   git clone https://github.com/rohitm487/devnagari-lang-web.git
    cd devnagari-lang-web
    ```
 
@@ -35,7 +35,7 @@ An online IDE for the Devnagari Programming Language, allowing you to write and 
 
 ### Method 2: Direct Download
 
-1. Go to the [releases page](https://github.com/yourusername/devnagari-lang-web/releases)
+1. Go to the [releases page](https://github.com/rohitm487/devnagari-lang-web/releases)
 2. Download the latest release ZIP file
 3. Extract the ZIP file to your desired location
 4. Open a terminal in the extracted folder
