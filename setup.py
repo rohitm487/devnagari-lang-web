@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[],
     author="Your Name",
-    author_email="your.email@example.com",
+    author_email="rohit@example.com",
     description="A programming language using Devanagari script",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
