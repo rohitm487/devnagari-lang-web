@@ -286,16 +286,33 @@
             try {
                 // Get the base URL for GitHub Pages
                 const baseUrl = window.location.href.replace(/\/$/, '');
-                const fileUrl = `${baseUrl}/devnagari_lang/${filename}`;
+                // Add a timestamp to prevent caching
+                const timestamp = new Date().getTime();
+                const fileUrl = `${baseUrl}/devnagari_lang/${filename}?t=${timestamp}`;
                 console.log(`Attempting to fetch: ${fileUrl}`);
                 
                 // Try to fetch the file
-                const response = await fetch(fileUrl);
+                const response = await fetch(fileUrl, {
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
+                });
+                
                 if (!response.ok) {
                     // If the first attempt fails, try without the repository name
-                    const altUrl = `${baseUrl.split('/').slice(0, -1).join('/')}/devnagari_lang/${filename}`;
+                    const altUrl = `${baseUrl.split('/').slice(0, -1).join('/')}/devnagari_lang/${filename}?t=${timestamp}`;
                     console.log(`First attempt failed, trying alternative URL: ${altUrl}`);
-                    const altResponse = await fetch(altUrl);
+                    const altResponse = await fetch(altUrl, {
+                        cache: 'no-store',
+                        headers: {
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0'
+                        }
+                    });
                     if (!altResponse.ok) {
                         console.error(`Failed to fetch ${filename}:`, {
                             status: altResponse.status,

@@ -32,12 +32,17 @@ jobs:
           chmod 644 deploy/devnagari_lang/*.py
           # Copy examples
           cp -r examples deploy/
-          # Create a test file to verify deployment
-          echo "Test file" > deploy/test.txt
-          # List contents to verify
-          ls -la deploy/devnagari_lang/
           # Create a simple index file for the devnagari_lang directory
           echo "Python package for Devnagari Programming Language" > deploy/devnagari_lang/index.html
+          # Create a .nojekyll file to prevent GitHub Pages from processing the site
+          touch deploy/.nojekyll
+          # Create a _headers file for custom headers
+          cat > deploy/_headers << 'EOL'
+/*.py
+  Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
+  Pragma: no-cache
+  Expires: 0
+EOL
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
