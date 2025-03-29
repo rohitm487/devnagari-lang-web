@@ -36,6 +36,8 @@ jobs:
           echo "Test file" > deploy/test.txt
           # List contents to verify
           ls -la deploy/devnagari_lang/
+          # Create a simple index file for the devnagari_lang directory
+          echo "Python package for Devnagari Programming Language" > deploy/devnagari_lang/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

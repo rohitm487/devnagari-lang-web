@@ -289,14 +289,22 @@
                 const fileUrl = `${baseUrl}/devnagari_lang/${filename}`;
                 console.log(`Attempting to fetch: ${fileUrl}`);
                 
+                // Try to fetch the file
                 const response = await fetch(fileUrl);
                 if (!response.ok) {
-                    console.error(`Failed to fetch ${filename}:`, {
-                        status: response.status,
-                        statusText: response.statusText,
-                        url: fileUrl
-                    });
-                    throw new Error(`Failed to fetch ${filename}: ${response.status} ${response.statusText}`);
+                    // If the first attempt fails, try without the repository name
+                    const altUrl = `${baseUrl.split('/').slice(0, -1).join('/')}/devnagari_lang/${filename}`;
+                    console.log(`First attempt failed, trying alternative URL: ${altUrl}`);
+                    const altResponse = await fetch(altUrl);
+                    if (!altResponse.ok) {
+                        console.error(`Failed to fetch ${filename}:`, {
+                            status: altResponse.status,
+                            statusText: altResponse.statusText,
+                            url: altUrl
+                        });
+                        throw new Error(`Failed to fetch ${filename}: ${altResponse.status} ${altResponse.statusText}`);
+                    }
+                    return await altResponse.text();
                 }
                 
                 const content = await response.text();
