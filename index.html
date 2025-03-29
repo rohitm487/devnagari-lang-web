@@ -286,13 +286,22 @@
             try {
                 // Get the base URL for GitHub Pages
                 const baseUrl = window.location.href.replace(/\/$/, '');
-                console.log(`Fetching ${baseUrl}/devnagari_lang/${filename}`);
-                const response = await fetch(`${baseUrl}/devnagari_lang/${filename}`);
+                const fileUrl = `${baseUrl}/devnagari_lang/${filename}`;
+                console.log(`Attempting to fetch: ${fileUrl}`);
+                
+                const response = await fetch(fileUrl);
                 if (!response.ok) {
-                    console.error(`Failed to fetch ${filename}:`, response.status, response.statusText);
+                    console.error(`Failed to fetch ${filename}:`, {
+                        status: response.status,
+                        statusText: response.statusText,
+                        url: fileUrl
+                    });
                     throw new Error(`Failed to fetch ${filename}: ${response.status} ${response.statusText}`);
                 }
-                return await response.text();
+                
+                const content = await response.text();
+                console.log(`Successfully fetched ${filename}, content length: ${content.length}`);
+                return content;
             } catch (error) {
                 console.error(`Error fetching ${filename}:`, error);
                 throw error;
@@ -302,6 +311,7 @@
         async function initPyodide() {
             document.getElementById("loading").style.display = "flex";
             try {
+                console.log("Loading Pyodide...");
                 pyodide = await loadPyodide();
                 console.log("Pyodide loaded successfully");
                 

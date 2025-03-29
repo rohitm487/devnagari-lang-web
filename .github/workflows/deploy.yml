@@ -34,6 +34,8 @@ jobs:
           cp -r examples deploy/
           # Create a test file to verify deployment
           echo "Test file" > deploy/test.txt
+          # List contents to verify
+          ls -la deploy/devnagari_lang/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
