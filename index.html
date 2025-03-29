@@ -284,7 +284,9 @@
 
         async function fetchPythonFile(filename) {
             try {
-                const response = await fetch(`devnagari_lang/${filename}`);
+                // Get the base URL for GitHub Pages
+                const baseUrl = window.location.href.replace(/\/$/, '');
+                const response = await fetch(`${baseUrl}/devnagari_lang/${filename}`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch ${filename}`);
                 }
@@ -300,16 +302,23 @@
             try {
                 pyodide = await loadPyodide();
                 
+                // Create the devnagari_lang directory in the virtual filesystem
                 await pyodide.runPythonAsync(`
 import os
 if not os.path.exists('devnagari_lang'):
     os.makedirs('devnagari_lang')`);
 
+                // Load all Python files
                 const files = ['__init__.py', 'lexer.py', 'parser.py', 'interpreter.py', 'devnagari.py'];
                 for (const file of files) {
                     try {
                         const content = await fetchPythonFile(file);
-                        const escapedContent = content.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+                        // Properly escape the content for Python string
+                        const escapedContent = content
+                            .replace(/\\/g, '\\\\')
+                            .replace(/"/g, '\\"')
+                            .replace(/\n/g, '\\n');
+                        
                         await pyodide.runPythonAsync(`
 with open('devnagari_lang/${file}', 'w', encoding='utf-8') as f:
     f.write("""${escapedContent}""")`);

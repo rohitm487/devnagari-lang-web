@@ -23,9 +23,15 @@ jobs:
       - name: Create deployment directory
         run: |
           mkdir -p deploy
-          cp -r index.html devnagari_lang deploy/
-          cp -r examples deploy/
+          # Copy web files
+          cp -r index.html deploy/
           cp -r web deploy/
+          # Create a copy of Python files with proper permissions
+          mkdir -p deploy/devnagari_lang
+          cp -r devnagari_lang/*.py deploy/devnagari_lang/
+          chmod 644 deploy/devnagari_lang/*.py
+          # Copy examples
+          cp -r examples deploy/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
