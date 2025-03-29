@@ -314,12 +314,19 @@
                         }
                     });
                     if (!altResponse.ok) {
-                        console.error(`Failed to fetch ${filename}:`, {
-                            status: altResponse.status,
-                            statusText: altResponse.statusText,
-                            url: altUrl
-                        });
-                        throw new Error(`Failed to fetch ${filename}: ${altResponse.status} ${altResponse.statusText}`);
+                        // If both attempts fail, try loading from a CDN or backup location
+                        const backupUrl = `https://raw.githubusercontent.com/rohitm487/devnagari-lang-web/main/devnagari_lang/${filename}`;
+                        console.log(`Both attempts failed, trying backup URL: ${backupUrl}`);
+                        const backupResponse = await fetch(backupUrl);
+                        if (!backupResponse.ok) {
+                            console.error(`Failed to fetch ${filename}:`, {
+                                status: backupResponse.status,
+                                statusText: backupResponse.statusText,
+                                url: backupUrl
+                            });
+                            throw new Error(`Failed to fetch ${filename}: ${backupResponse.status} ${backupResponse.statusText}`);
+                        }
+                        return await backupResponse.text();
                     }
                     return await altResponse.text();
                 }

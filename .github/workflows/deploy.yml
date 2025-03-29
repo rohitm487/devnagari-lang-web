@@ -37,12 +37,10 @@ jobs:
           # Create a .nojekyll file to prevent GitHub Pages from processing the site
           touch deploy/.nojekyll
           # Create a _headers file for custom headers
-          cat > deploy/_headers << 'EOL'
-/*.py
-  Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
-  Pragma: no-cache
-  Expires: 0
-EOL
+          echo "/*.py" > deploy/_headers
+          echo "  Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate" >> deploy/_headers
+          echo "  Pragma: no-cache" >> deploy/_headers
+          echo "  Expires: 0" >> deploy/_headers
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
