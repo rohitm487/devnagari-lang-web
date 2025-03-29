@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>देवनागरी Programming Language</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #4f46e5;
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-color: #1e293b;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .panel {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-container, .output-container {
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #editor {
+            flex: 1;
+            font-size: 15px;
+        }
+
+        #output {
+            flex: 1;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            white-space: pre-wrap;
+            padding: 20px;
+            margin: 0;
+            overflow-y: auto;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-size: 14px;
+        }
+
+        .controls {
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+            background: #f1f5f9;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 20px 40px;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .examples-dropdown {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .editor-container, .output-container {
+                height: 400px;
+            }
+        }
+
+        /* Add a subtle animation for the run button */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .run-button {
+            animation: pulse 2s infinite;
+        }
+
+        /* Style for success and error messages in output */
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>देवनागरी Programming Language</h1>
+        <p>Write and execute Devanagari programming language code directly in your browser. Try out the examples or write your own code!</p>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="loading-content">
+            <h2>Loading Pyiodide...</h2>
+            <p>Please wait while we initialize the runtime</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="editor-container panel">
+            <div class="panel-header">
+                <span>Code Editor</span>
+                <select class="examples-dropdown" onchange="loadExample(this.value)">
+                    <option value="">Select an Example</option>
+                    <option value="factorial">Factorial Calculator</option>
+                    <option value="fibonacci">Fibonacci Series</option>
+                    <option value="calculator">Simple Calculator</option>
+                </select>
+            </div>
+            <div id="editor">// Write your Devnagari code here
+फंक्शन factorial(n) {
+    अगर n <= 1 {
+        वापस 1;
+    }
+    वापस n * factorial(n - 1);
+}
+
+केलिए (वैरिएबल i = 1; i <= 5; i = i + 1) {
+    वैरिएबल result = factorial(i);
+    छाप i + "! = " + result;
+}</div>
+            <div class="controls">
+                <button onclick="runCode()" class="run-button">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 2L12 8L4 14V2Z" fill="currentColor"/>
+                    </svg>
+                    Run Code
+                </button>
+                <button onclick="clearOutput()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M2 4H14M5 4V3C5 2.44772 5.44772 2 6 2H10C10.5523 2 11 2.44772 11 3V4M12 4V13C12 13.5523 11.5523 14 11 14H5C4.44772 14 4 13.5523 4 13V4" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Clear Output
+                </button>
+            </div>
+        </div>
+
+        <div class="output-container panel">
+            <div class="panel-header">
+                <span>Output</span>
+            </div>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script>
+        let pyodide = null;
+        let editor = null;
+
+        const examples = {
+            factorial: `// Factorial calculation
+फंक्शन factorial(n) {
+    अगर n <= 1 {
+        वापस 1;
+    }
+    वापस n * factorial(n - 1);
+}
+
+केलिए (वैरिएबल i = 1; i <= 5; i = i + 1) {
+    वैरिएबल result = factorial(i);
+    छाप i + "! = " + result;
+}`,
+            fibonacci: `// Fibonacci series calculation
+फंक्शन fibonacci(n) {
+    अगर n <= 1 {
+        वापस n;
+    }
+    वापस fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+केलिए (वैरिएबल i = 0; i < 10; i = i + 1) {
+    छाप "F(" + i + ") = " + fibonacci(i);
+}`,
+            calculator: `// Simple calculator
+वैरिएबल a = 10;
+वैरिएबल b = 5;
+
+छाप "जोड़: " + (a + b);
+छाप "घटाव: " + (a - b);
+छाप "गुणा: " + (a * b);
+छाप "भाग: " + (a / b);`
+        };
+
+        function loadExample(key) {
+            if (key && examples[key]) {
+                editor.setValue(examples[key], -1);
+            }
+        }
+
+        async function fetchPythonFile(filename) {
+            try {
+                const response = await fetch(`devnagari_lang/${filename}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch ${filename}`);
+                }
+                return await response.text();
+            } catch (error) {
+                console.error(`Error fetching ${filename}:`, error);
+                throw error;
+            }
+        }
+
+        async function initPyodide() {
+            document.getElementById("loading").style.display = "flex";
+            try {
+                pyodide = await loadPyodide();
+                
+                await pyodide.runPythonAsync(`
+import os
+if not os.path.exists('devnagari_lang'):
+    os.makedirs('devnagari_lang')`);
+
+                const files = ['__init__.py', 'lexer.py', 'parser.py', 'interpreter.py', 'devnagari.py'];
+                for (const file of files) {
+                    try {
+                        const content = await fetchPythonFile(file);
+                        const escapedContent = content.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+                        await pyodide.runPythonAsync(`
+with open('devnagari_lang/${file}', 'w', encoding='utf-8') as f:
+    f.write("""${escapedContent}""")`);
+                    } catch (error) {
+                        document.getElementById("output").innerHTML = `<span class="error">Error loading ${file}: ${error.message}</span>`;
+                        throw error;
+                    }
+                }
+
+                await pyodide.runPythonAsync(`
+import sys
+if '' not in sys.path:
+    sys.path.insert(0, '')
+
+from devnagari_lang.lexer import Lexer
+from devnagari_lang.parser import Parser
+from devnagari_lang.interpreter import Interpreter
+
+def run_code(source):
+    try:
+        lexer = Lexer(source)
+        tokens = lexer.scan_tokens()
+        parser = Parser(tokens)
+        statements = parser.parse()
+        interpreter = Interpreter()
+        interpreter.interpret(statements)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
+globals()['run_code'] = run_code`);
+
+                document.getElementById("loading").style.display = "none";
+            } catch (error) {
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("output").innerHTML = `<span class="error">Initialization error: ${error.message}</span>`;
+            }
+        }
+
+        function initEditor() {
+            editor = ace.edit("editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.session.setMode("ace/mode/text");
+            editor.setFontSize(14);
+            editor.setShowPrintMargin(false);
+            editor.session.setTabSize(4);
+        }
+
+        function clearOutput() {
+            document.getElementById("output").textContent = "";
+        }
+
+        async function runCode() {
+            const output = document.getElementById("output");
+            const runButton = document.querySelector('.run-button');
+            runButton.disabled = true;
+            output.textContent = "Running...\n";
+            
+            try {
+                const code = editor.getValue();
+                
+                await pyodide.runPythonAsync(`
+import sys
+from io import StringIO
+
+# Capture stdout
+old_stdout = sys.stdout
+sys.stdout = StringIO()
+
+try:
+    run_code("""${code}""")
+except Exception as e:
+    print(f"Error: {str(e)}")
+finally:
+    # Restore stdout and get captured output
+    output = sys.stdout.getvalue()
+    sys.stdout = old_stdout`);
+                
+                const result = await pyodide.runPythonAsync("output");
+                output.textContent = result;
+            } catch (error) {
+                output.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            } finally {
+                runButton.disabled = false;
+            }
+        }
+
+        window.addEventListener("load", async () => {
+            await initPyodide();
+            initEditor();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,38 @@
+// Fibonacci calculation using recursion
+फंक्शन fib_recursive(n) {
+    अगर n <= 1 {
+        वापस n;
+    }
+    वापस fib_recursive(n - 1) + fib_recursive(n - 2);
+}
+
+// Fibonacci calculation using iteration
+फंक्शन fib_iterative(n) {
+    अगर n <= 1 {
+        वापस n;
+    }
+    
+    वैरिएबल a = 0;
+    वैरिएबल b = 1;
+    वैरिएबल i = 2;
+    
+    जबतक i <= n {
+        वैरिएबल temp = b;
+        b = a + b;
+        a = temp;
+        i = i + 1;
+    }
+    
+    वापस b;
+}
+
+// Compare both approaches
+छाप "Fibonacci numbers using recursive approach:";
+केलिए (वैरिएबल i = 0; i < 10; i = i + 1) {
+    छाप "F(" + i + ") = " + fib_recursive(i);
+}
+
+छाप "\nFibonacci numbers using iterative approach:";
+केलिए (वैरिएबल i = 0; i < 10; i = i + 1) {
+    छाप "F(" + i + ") = " + fib_iterative(i);
+} 
