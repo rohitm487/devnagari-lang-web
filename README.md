@@ -59,39 +59,50 @@ An online IDE for the Devnagari Programming Language, allowing you to write and 
 
 3. **Examples**
    Try these built-in examples:
-   - Factorial Calculator
-   - Fibonacci Series
-   - Simple Calculator
+   - क्रमगुणित की गणना (Factorial Calculator)
+   - फिबोनैकी श्रृंखला (Fibonacci Series)
+   - सरल कैलकुलेटर (Simple Calculator)
 
 ## Examples
 
-### Factorial Calculator
+### क्रमगुणित की गणना (Factorial Calculator)
 ```
-फंक्शन factorial(n) {
-    अगर n <= 1 {
+फंक्शन क्रमगुणितअ(संख्या) {
+    अगर संख्या <= 1 {
         वापस 1;
     }
-    वापस n * factorial(n - 1);
+    वापस संख्या * क्रमगुणितअ(संख्या - 1);
 }
 
-केलिए (वैरिएबल i = 1; i <= 5; i = i + 1) {
-    वैरिएबल result = factorial(i);
-    छाप i + "! = " + result;
+केलिए (वैरिएबल क्रम = 1; क्रम <= 5; क्रम = क्रम + 1) {
+    वैरिएबल परिणाम = क्रमगुणितअ(क्रम);
+    छाप क्रम + "! = " + परिणाम;
 }
 ```
 
-### Fibonacci Series
+### फिबोनैकी श्रृंखला (Fibonacci Series)
 ```
-फंक्शन fibonacci(n) {
-    अगर n <= 1 {
-        वापस n;
+फंक्शन फिबोनैकी(संख्या) {
+    अगर संख्या <= 1 {
+        वापस संख्या;
     }
-    वापस fibonacci(n - 1) + fibonacci(n - 2);
+    वापस फिबोनैकी(संख्या - 1) + फिबोनैकी(संख्या - 2);
 }
 
-केलिए (वैरिएबल i = 0; i < 10; i = i + 1) {
-    छाप "F(" + i + ") = " + fibonacci(i);
+केलिए (वैरिएबल क्रम = 0; क्रम < 10; क्रम = क्रम + 1) {
+    छाप "F(" + क्रम + ") = " + फिबोनैकी(क्रम);
 }
+```
+
+### सरल कैलकुलेटर (Simple Calculator)
+```
+वैरिएबल पहली_संख्या = 10;
+वैरिएबल दूसरी_संख्या = 5;
+
+छाप "जोड़: " + (पहली_संख्या + दूसरी_संख्या);
+छाप "घटाव: " + (पहली_संख्या - दूसरी_संख्या);
+छाप "गुणा: " + (पहली_संख्या * दूसरी_संख्या);
+छाप "भाग: " + (पहली_संख्या / दूसरी_संख्या);
 ```
 
 ## Troubleshooting
@@ -136,6 +147,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 If you encounter any issues or have questions:
-1. Check the [Issues](https://github.com/yourusername/devnagari-lang-web/issues) page
+1. Check the [Issues](https://github.com/rohitm487/devnagari-lang-web/issues) page
 2. Create a new issue if your problem isn't already reported
 3. Join our community discussions 
