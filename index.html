@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>देवनागरी Programming Language</title>
      <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.33.2/ace.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.49.0/min/vs/loader.min.js"></script>
      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -202,18 +202,7 @@
                     <option value="calculator">Simple Calculator</option>
                 </select>
             </div>
-            <div id="editor">// क्रमगुणित की गणना
-फंक्शन क्रमगुणितअ(संख्या) {
-    अगर संख्या <= 1 {
-        वापस 1;
-    }
-    वापस संख्या * क्रमगुणितअ(संख्या - 1);
-}
-
-केलिए (वैरिएबल क्रम = 1; क्रम <= 5; क्रम = क्रम + 1) {
-    वैरिएबल परिणाम = क्रमगुणितअ(क्रम);
-    छाप क्रम + "! = " + परिणाम;
-}</div>
+            <div id="editor"></div>
             <div class="controls">
                 <button onclick="runCode()" class="run-button">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -243,7 +232,8 @@
         let editor = null;
 
         const examples = {
-            factorial: `// क्रमगुणित की गणना
+                        factorial: `
+// क्रमगुणित की गणना
 फंक्शन क्रमगुणितअ(संख्या) {
     अगर संख्या <= 1 {
         वापस 1;
@@ -255,7 +245,8 @@
     वैरिएबल परिणाम = क्रमगुणितअ(क्रम);
     छाप क्रम + "! = " + परिणाम;
 }`,
-            fibonacci: `// फिबोनैकी श्रृंखला की गणना
+                        fibonacci: `
+// फिबोनैकी श्रृंखला की गणना
 फंक्शन फिबोनैकी(संख्या) {
     अगर संख्या <= 1 {
         वापस संख्या;
@@ -266,7 +257,8 @@
 केलिए (वैरिएबल क्रम = 0; क्रम < 10; क्रम = क्रम + 1) {
     छाप "F(" + क्रम + ") = " + फिबोनैकी(क्रम);
 }`,
-            calculator: `// सरल कैलकुलेटर
+                        calculator: `
+// सरल कैलकुलेटर
 वैरिएबल पहली_संख्या = 10;
 वैरिएबल दूसरी_संख्या = 5;
 
@@ -274,7 +266,7 @@
 छाप "घटाव: " + (पहली_संख्या - दूसरी_संख्या);
 छाप "गुणा: " + (पहली_संख्या * दूसरी_संख्या);
 छाप "भाग: " + (पहली_संख्या / दूसरी_संख्या);`
-        };
+                        };
 
         function loadExample(key) {
             if (key && examples[key]) {
@@ -404,44 +396,51 @@ globals()['run_code'] = run_code`);
                 document.getElementById("output").innerHTML = `<span class="error">Initialization error: ${error.message}</span>`;
             }
         }
+    function initEditor() {
+        //loader config
+        require.config({
+            paths: {
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.49.0/min/vs'
+            }
+        });
 
-        function initEditor() {
-            editor = ace.edit("editor");
-            editor.setTheme("ace/theme/monokai");
-            editor.session.setMode("ace/mode/text");
-            editor.setShowPrintMargin(false);
-            editor.session.setTabSize(4);
-        
-            // --- FIX STARTS HERE ---
-        
-            // 1. Force the editor to use a rendering mode better for complex scripts.
-            editor.setOptions({
-                useComplexTextRendering: true,
-                fontFamily: "monospace, 'Noto Sans Devanagari', sans-serif", // Set a fallback font
-                fontSize: "15px" // Slightly larger font can improve readability
+        // Load the editor
+        require(['vs/editor/editor.main'], function() {
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                value: examples.factorial,
+                language: 'plaintext',
+                theme: 'vs-dark', // Monaco has its own themes like 'vs-dark' or 'vs-light'
+                fontFamily: "'Noto Sans Devanagari', monospace",
+                fontSize: 15,
+                wordWrap: 'on',
+                automaticLayout: true // This is important for resizing
             });
-        
-            // --- FIX ENDS HERE ---
+        });
+    }
+
+    function clearOutput() {
+        document.getElementById("output").textContent = "";
+    }
+
+    async function runCode() {
+        if (!editor || !pyodide) {
+            console.error("Editor or Pyodide not initialized.");
+            return;
         }
 
-        function clearOutput() {
-            document.getElementById("output").textContent = "";
-        }
+        const output = document.getElementById("output");
+        const runButton = document.querySelector('.run-button');
+        runButton.disabled = true;
+        output.textContent = "Running...\n";
 
-        async function runCode() {
-            const output = document.getElementById("output");
-            const runButton = document.querySelector('.run-button');
-            runButton.disabled = true;
-            output.textContent = "Running...\n";
+        try {
+            // Use Monaco's getValue method
+            const code = editor.getValue().replace(/`/g, '\\`'); // Escape backticks for template literal
             
-            try {
-                const code = editor.getValue();
-                
-                await pyodide.runPythonAsync(`
+            await pyodide.runPythonAsync(`
 import sys
 from io import StringIO
 
-# Capture stdout
 old_stdout = sys.stdout
 sys.stdout = StringIO()
 
@@ -450,23 +449,27 @@ try:
 except Exception as e:
     print(f"Error: {str(e)}")
 finally:
-    # Restore stdout and get captured output
-    output = sys.stdout.getvalue()
-    sys.stdout = old_stdout`);
-                
-                const result = await pyodide.runPythonAsync("output");
-                output.textContent = result;
-            } catch (error) {
-                output.innerHTML = `<span class="error">Error: ${error.message}</span>`;
-            } finally {
-                runButton.disabled = false;
-            }
+    output_val = sys.stdout.getvalue()
+    sys.stdout = old_stdout
+`);
+            const result = pyodide.globals.get('output_val');
+            output.textContent = result;
+        } catch (error) {
+            output.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+        } finally {
+            runButton.disabled = false;
         }
+    }
 
-        window.addEventListener("load", async () => {
-            await initPyodide();
-            initEditor();
-        });
+    // Updated load event listener
+    window.addEventListener("load", async () => {
+        initEditor(); // Start initializing the editor (it loads in the background)
+        try {
+            await initPyodide(); // Initialize Pyodide
+        } catch (error) {
+            console.error("Failed to initialize Pyodide.", error);
+        }
+    });
     </script>
 </body>
 </html> 
