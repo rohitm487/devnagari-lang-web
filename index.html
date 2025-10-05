@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #6366f1;
@@ -409,9 +410,19 @@ globals()['run_code'] = run_code`);
             editor = ace.edit("editor");
             editor.setTheme("ace/theme/monokai");
             editor.session.setMode("ace/mode/text");
-            editor.setFontSize(14);
             editor.setShowPrintMargin(false);
             editor.session.setTabSize(4);
+        
+            // --- FIX STARTS HERE ---
+        
+            // 1. Force the editor to use a rendering mode better for complex scripts.
+            editor.setOptions({
+                useComplexTextRendering: true,
+                fontFamily: "monospace, 'Noto Sans Devanagari', sans-serif", // Set a fallback font
+                fontSize: "15px" // Slightly larger font can improve readability
+            });
+        
+            // --- FIX ENDS HERE ---
         }
 
         function clearOutput() {
